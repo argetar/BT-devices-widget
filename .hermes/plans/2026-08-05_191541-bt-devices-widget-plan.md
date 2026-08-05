@@ -37,8 +37,9 @@ MVP should be split into proof gates:
 2. Initial supported Android baseline proposal: Android 8.0+ / API 26 with `targetSdk 35`; revisit after feasibility spike if needed.
 3. Device scope: broad bonded Bluetooth devices, not limited to one class.
 4. Distribution: private/sideload APK first; keep code and permissions as Play Store-compatible as feasible for future publication.
-5. Existing third-party apps/widgets reportedly connect/disconnect devices successfully on the user's phone, so the spike should actively seek a practical implementation path rather than assume only settings fallback.
+5. Existing third-party apps/widgets reportedly connect/disconnect devices successfully on the user's phone, so the spike should actively seek a practical implementation path rather than assume only settings fallback. Reference apps seen on the user's phone: **Bluetooth Audio Connect Widget** and **Bluetooth AudioWidget+**.
 6. Fallback definition: if direct toggle is not possible for a device/profile, the app may open Android Bluetooth settings or show a clear unsupported message instead of silently failing. This is not the desired primary behavior; it is a safety/product fallback to decide after feasibility testing.
+7. Audio-specific functions are desirable later, inspired by the reference apps, but they are explicitly **not** the first MVP. The first MVP is: selected device list, connection-state display, and tap-to-connect/disconnect.
 
 ## Remaining open questions before UI polish
 
