@@ -1,0 +1,27 @@
+# Gradle / Android
+.gradle/
+build/
+*/build/
+local.properties
+.cxx/
+.externalNativeBuild/
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / env
+.env
+*.env
+*.keystore
+*.jks
+*.p12
+*.pem
+*.key
+
+# Hermes/local
+.hermes/tmp/
