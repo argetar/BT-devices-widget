@@ -15,8 +15,12 @@
 - Repo: `https://github.com/argetar/BT-devices-widget.git`
 - Local path: `/home/eli/BT-devices-widget`
 - Initial scaffold is intentionally minimal and does not implement Bluetooth control yet.
+- Primary test phone/MVP target: **Honor 200 Pro**, shipped with Android 14 / MagicOS 8 according to public device references; app should not be hardcoded to this phone.
+- Distribution path: first private/sideload APK for the user's phone; design should remain compatible with a later Play Store path where feasible.
+- Device types: intentionally broad — headphones, speakers, car, HID, watches and other bonded Bluetooth devices should be represented; actual connect/disconnect capability may be profile/API-specific.
+- Recommended baseline: target current Android, support **Android 8.0+ (API 26)** initially because home-screen widgets, foreground/background restrictions and Kotlin/AGP support are manageable there. If Bluetooth control proves simpler with Android 12+ permissions only, revisit whether to raise minSdk; for now keep `minSdk 26`, `targetSdk 35`.
 - Current Hermes host does **not** have Java/Gradle/Android SDK installed, so local Android builds are currently blocked. Build verification should use GitHub Actions or a later local Android toolchain setup.
-- Important feasibility risk: Android public APIs generally allow listing bonded devices and observing connection state with permissions, but programmatic connect/disconnect for arbitrary devices/profiles may be restricted or require profile-specific APIs, hidden APIs, OEM behavior, companion-device flows, or privileged/Shizuku/root approaches. This must be validated before promising one-tap toggle for all devices.
+- Important feasibility risk: Android public APIs generally allow listing bonded devices and observing connection state with permissions, but programmatic connect/disconnect for arbitrary devices/profiles can be profile/OEM/API dependent. The user reports existing apps/widgets can connect/disconnect devices on his phone, so the first gate should verify which public/profile APIs or fallbacks they likely use rather than assume impossibility.
 
 ## Proposed MVP definition
 
@@ -27,15 +31,20 @@ MVP should be split into proof gates:
 3. **Action MVP:** tap behavior based on feasible API result: direct toggle where supported; otherwise open Bluetooth settings/device detail or show unsupported state.
 4. **Customization:** widget background color/transparency and icon style.
 
-## Open questions for user
+## User decisions / clarified requirements
 
-1. Target phone model and Android version?
-2. Device types: earbuds/headphones, car, watch, keyboard, speaker, other?
-3. Is fallback acceptable if direct connect/disconnect is impossible for some devices, e.g. open Bluetooth settings or device details?
-4. Should app be Play Store-compatible, or is sideload/private APK enough?
-5. Is Shizuku/root/privileged mode acceptable if public API cannot toggle devices?
-6. Preferred widget size(s): 2x1, 3x1, 4x2, resizable only?
-7. Should there be multiple widget instances with different selected devices/colors?
+1. Primary phone: Honor 200 Pro, but implementation should not be phone-specific.
+2. Initial supported Android baseline proposal: Android 8.0+ / API 26 with `targetSdk 35`; revisit after feasibility spike if needed.
+3. Device scope: broad bonded Bluetooth devices, not limited to one class.
+4. Distribution: private/sideload APK first; keep code and permissions as Play Store-compatible as feasible for future publication.
+5. Existing third-party apps/widgets reportedly connect/disconnect devices successfully on the user's phone, so the spike should actively seek a practical implementation path rather than assume only settings fallback.
+6. Fallback definition: if direct toggle is not possible for a device/profile, the app may open Android Bluetooth settings or show a clear unsupported message instead of silently failing. This is not the desired primary behavior; it is a safety/product fallback to decide after feasibility testing.
+
+## Remaining open questions before UI polish
+
+1. Exact examples of existing apps/widgets that work well, if the user wants us to benchmark behavior.
+2. Preferred first test devices: choose 2-3 real devices available at home for the first manual test round.
+3. Preferred widget visual style: labels under icons vs icons only; default transparency percentage.
 
 ---
 
